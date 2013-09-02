@@ -8,24 +8,17 @@ if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulari
     //si hace falta cambiamos las propiedades tabla, campo_usuario, campo_contraseña, metodo_encriptacion
 
     //verificamos el usuario y contraseña mandados
-    if ($Login->login($_POST['nice'],$_POST['password'], $_POST['id_estado'], $_POST['id_cateuser'])) {
+    if ($Login->login($_POST['nice'],$_POST['password'])) {
 
-       //acciones a realizar cuando un usuario se identifica
-       //EJ: almacenar en memoria sus datos completos, registrar un acceso en una tabla mysql
-       //Estas acciones se veran en los siguientes tutorianes en http://www.emiliort.com
-
-        //saltamos al inicio del área restringida
         header('Location: pagina-acceso-restringido.php');
         die();
     } else {
-        //acciones a realizar en un intento fallido
-        //Ej: mostrar captcha para evitar ataques fuerza bruta, bloquear durante un rato esta ip, ....
-        //Estas acciones se veran en los siguientes tutorianes en http://www.emiliort.com
-
-        //preparamos un mensaje de error y continuamos para mostrar el formulario
         $mensaje='Usuario o contraseña incorrecto.';
     }
 } //fin if post
+
+			 
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
