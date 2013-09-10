@@ -1,26 +1,11 @@
 <?php
 	include("conexion.php");
 	include("funciones.php");
-if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulario?
-    include('php_lib/config.ini.php'); //incluimos configuración
-    include('php_lib/login.class.php'); //incluimos las funciones
-    $Login=new Login();
-    //si hace falta cambiamos las propiedades tabla, campo_usuario, campo_contraseña, metodo_encriptacion
 
-    //verificamos el usuario y contraseña mandados
-    if ($Login->login($_POST['nice'],$_POST['password'])) {
+	
 
-        header('Location: pagina-acceso-restringido.php');
-        die();
-    } else {
-        $mensaje='Usuario o contraseña incorrecto.';
-    }
-} //fin if post
-
-			 
 
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -58,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulari
 		 
 		}
 	</style>
+	</head>
 	<body>
 		<div class="container">
 				<div class="row">
@@ -90,7 +76,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulari
 								<span>Banadesa</span>
 							</font>	
 						</h1>
-						<form method="POST" action="">
+						
+			<form method="POST" action=""id="frmlogin" name="frmlogin" >
 							<div class="formulario">
 									<table class="formulario"width= "340px" height="200px" valign="top">
 										<tr>
@@ -103,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulari
 										</tr>
 										<tr>
 											<td>
-												<input type="text" size="25" maxlength="25" valign="left"  name="nice" style='font-size: 16px'>
+												<input type="text" size="25" maxlength="25" valign="left"  name="usuario" style='font-size: 16px'>
 											</td>
 										</font>
 										</tr>
@@ -125,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulari
 										
 										<tr>
 										<td class= "label" href="#" onclick=”#” style='color: blue; text-decitation: none; color: green' >
-											<a href="#"> <b> <u>&#191;Ha olvidado su contrase&ntildea?</u> </b></a>
+											<a href="recuperar_contrasena.php"> <b> <u>&#191;Ha olvidado su contrase&ntildea?</u> </b></a>
 										</td>
 										</tr>
 									
@@ -142,9 +129,48 @@ if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulari
 			</table>
 			
 			<?php
+			if ($_SERVER['REQUEST_METHOD']=='POST') { // ¿Nos mandan datos por el formulario?
+				include('php_lib/config.ini.php'); //incluimos configuración
+				include('php_lib/login.class.php'); //incluimos las funciones
+				$Login=new Login();
+				//si hace falta cambiamos las propiedades tabla, campo_usuario, campo_contraseña, metodo_encriptacion
+
+				//verificamos el usuario y contraseña mandados
+				if ($Login->login($_POST['usuario'],$_POST['password'])) {
+					require("pagina-acceso-restringido.php");	
+				} else {
+				
+					echo 'Contraseña o Nombre de usuario Incorrecto.';
+						}
+			} //fin if post
 			if (isset($_POST['iniciar'])) {
 				require("login.php");
 			}
+			
+			/////////////////////////////////////////////////////////////////////////////////
+			//mostrar errore de validacion 
+				if(isset($_POST['msg_error']))
+				{
+					switch($_POST['msg_error'])
+					{
+						case 1:
+						?>
+						<script type="text/javascript">
+						jAlert("El usuario o Password son Incorrectos.", "Seguridad");
+						$("#password").focus();
+						</script>
+						<?php
+							break;
+							case 2:
+						?>
+						<script type="text/javascript">
+							jsAlert("La Seccion a la que intenta entrar esta restringida.\n solo permitidos para usuarios registrados.", "Seguridad");
+							</script>
+							<?php
+								break;
+					}//fin del switch 
+				}
+				
 			?>
 	</div><!--cierre de  container-->		
 			
