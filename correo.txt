@@ -1,0 +1,241 @@
+Correo electrónico 
+
+
+Validar dirección de correo 
+
+Cuando tenemos un formulario que solicita una dirección de correo nos puede interesar validarla, comprobar  que la sintaxis es correcta. Una aproximación sería comprobar que la dirección verifica la expresión regular: 
+
+"^[_a-z0-9-]*@([_a-z0-9-]+([.][_a-z0-9-])*)+[.][a-z]{2,4}$" 
+
+Vemos un pequeño script de ejemplo de validación de la sintaxis de una dirección de correo válida: 
+
+
+
+<? 
+
+echo "<html><body>"; 
+
+
+
+echo "<form action=$PHP_SELF method=POST> 
+
+ <input name=correo value=$correo> 
+
+ <input type=submit name=boton value=Aceptar> 
+
+ </form>"; 
+
+
+
+switch ($boton) 
+
+{ 
+
+case "Aceptar": 
+
+ if( !eregi("^[_a-z0-9-]*@([_a-z0-9-]+([.][_a-z0-9-])*)+[.][a-z]{2,4}$", $correo) ) 
+
+ { 
+
+  echo "Error: '$correo' no es una dirección válida<br>"; 
+
+ } 
+
+ else 
+
+  echo "$correo es Correcta"; 
+
+break; 
+
+} 
+
+
+
+echo "</body></htm>"; 
+
+?> 
+
+
+Validez del dominio de una dirección de correo 
+
+En el ejemplo anterior verificábamos que la sintaxis de la dirección de correo era correcta pero en muchos casos puede que esto no sea suficiente, también será necesario comprobar que sería posible enviar correo a ese dominio. En el siguiente ejemplo, que es una ampliación del anterior, comprobamos además de la validez de la dirección sintácticamente, que el dominio es válido para poder enviar correo. Adicionalmente mostramos la lista de servidores de correo para ese dominio: 
+
+
+
+<? 
+
+echo "<html><body>"; 
+
+
+
+echo "<form action=$PHP_SELF method=POST> 
+
+ <input name=correo value=$correo> 
+
+ <input type=submit name=boton value=Aceptar> 
+
+ </form>"; 
+
+
+
+switch ($boton) 
+
+{ 
+
+case "Aceptar": 
+
+ if( !eregi("^[_a-z0-9-]*@([_a-z0-9-]+([.][_a-z0-9-])*)+[.][a-z]{2,4}$", $correo) ) 
+
+ { 
+
+  echo "Error: '$correo' no es una dirección válida<br>"; 
+
+ } 
+
+ else 
+
+ { 
+
+  // extraemos el dominio de la dirección 
+
+  $cr=split("@",$correo); 
+
+  $dominio=$cr[1]."."; 
+
+  echo "<br>$dominio <br>"; 
+
+   
+
+  // verificamos la existencia de un registro MX 
+
+  if (getmxrr($dominio, $cr)) 
+
+  { 
+
+   echo "$correo es Correcta con registro MX"; 
+
+   for ($i=0;$i<count($cr);$i++) 
+
+    echo "<br>$cr[$i]"; 
+
+  } 
+
+  // Comprobamos que existe el dominio 
+
+  elseif(checkdnsrr($dominio,"ANY")) 
+
+   echo "$correo es Correcta pero sin registro MX"; 
+
+  else 
+
+   echo "<br>El dominio de la dirección no es válido<br>"; 
+
+ } 
+
+break; 
+
+} 
+
+
+
+echo "</body></htm>"; 
+
+?> 
+
+
+
+Nota: Cada dominio de internet especifica unos registros MX que indican cuales son las máquinas encargadas de recoger el correo para ese dominio. Esto es una configuración de DNS. 
+
+
+
+
+Enviar correo saliente a un servidor smtp 
+
+En el caso de estar trabajando con plataformas Win32  y no disponer de un servidor smtp en la máquina local, en php.ini podremos especificar: 
+
+
+
+[mail function] 
+
+; For Win32 only. 
+
+SMTP = smtp_de_mi.provevedor.dom 
+
+
+
+
+Enviar un correo con fichero adjunto 
+
+El envío de correos con ficheros adjuntos 
+
+
+
+<? 
+
+
+
+// Información necesaria para construir el correo 
+
+$nombre_fichero="nombre_del_fichero"; 
+
+$to="destino@servidor.dom"; 
+
+$subject = 'Mail con correo adjunto'; 
+
+$texto="Texto del mail con posiblidad de html"; 
+
+$body = ''; 
+
+$boundary = "--NEXT_PART--"; 
+
+
+
+// Recuperamos el contenido del fichero que queremos enviar 
+
+$fp = fopen($nombre_fichero, 'r'); 
+
+$contenido = chunk_split(base64_encode(fread($fp,filesize($nombre_fichero)))); 
+
+fclose($fp); 
+
+
+
+// Construción de las cabecereas 
+
+$headers = "Content-Type: multipart/mixed; boundary=\"$boundary\"\n\n"; 
+
+$headers = "Mime-Version: 1.0\n"; 
+
+
+
+// Construcción del cuerp del mensaje 
+
+$body .= "--$boundary\n"; 
+
+$body .= "Content-Type: text/html; charset=ISO-8859-15\n\n"; 
+
+$body .= "$texto"; 
+
+$body .= "\n"; 
+
+$body .= "--$boundary\n"; 
+
+$body .= "Content-type: text/html; charset=ISO-8859-15; name=$nombrefichero\n"; 
+
+$body .= "Content-Transfer-Encoding: base64\n"; 
+
+$body .= "Content-Disposition: attachment\n\n"; 
+
+
+
+$body .= $contenido; 
+
+
+
+// Se envía el correo 
+
+mail( $to, $subject, $body, $headers ); 
+
+
+
+?> 

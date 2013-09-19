@@ -55,11 +55,24 @@ function login($usuario, $password){
         return false;
     }
 } 
+if(isset($_POST['usuario']) && !empty($_POST['usuario']) &&
+ isset($_POST['password']) && !empty($_POST['password'])) {
+ 
+$link = mysql_connect("localhost","root","");
+mysql_select_db("conocimiento",$link);
+
+$my_error = mysql_error($link);
+
+if(!empty($my_error)) 
+{ 
 
 
-	$usuario  =$_POST['usuario'];
-	$password =$_POST['password'];
-	$reqlen     = strlen($usuario) * strlen($password)
+echo "Por favor llene todos los campo."; 
+
+} 
+
+}
+	
 		
 		// crear funciones para validar los campor del usuario 
 		

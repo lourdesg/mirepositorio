@@ -1,6 +1,6 @@
 <?php
-  $value1 = $_POST['usuario'];
-  $value2 = $_POST['password'];
+if(isset($_POST['usuario']) && !empty($_POST['usuario']) &&
+ isset($_POST['password']) && !empty($_POST['password'])) {
 /* 
  * Ejemplo de una página asegurada
  * Simplemente hay que añadir esta línea de PHP al principio.
@@ -9,11 +9,13 @@
 $consulta=mysql_query("SELECT usuarios.id_usuario, estado.permiso as permiso FROM usuarios
             INNER JOIN estado
             ON usuarios.id_estado = estado.id_estado
-            WHERE nice = '".$value1."'
-            AND password = '".$value2."' ");
+            WHERE nice = '".$_POST['usuario']."'
+            AND password = '".$_POST['password']."' ");
 
 /* MUESTRA EN PANTALLA EL TEMA PRINCIPAL DEL FORO */
-while ($row=mysql_fetch_array($consulta)){
+while ($row=mysql_fetch_array($consulta))///error 
+
+{
 
 
 $nice =$row['id_usuario'];
@@ -28,7 +30,7 @@ if ($permiso==$ver)
 	}
 
 }
-
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
