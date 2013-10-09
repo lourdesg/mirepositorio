@@ -164,35 +164,7 @@ include("conexion.php");
 								<div class="formulario">
 									<table class="formulario">
 										<tr>
-											<td>
-												Categor&iacute;a de Usuario:
-											</td>
-											<td>
-												<input type="HIDDEN" name="id_cateuser" />
-												<?php 
-														$link =mysql_connect("localhost","root","");
-														mysql_select_db("conocimiento",$link); 
-														echo"<select type=name name=id_cateuser id=id_cateuser >"; 
-
-														$sql="SELECT descripcion, id_cateuser  FROM categoria_usuario"; 
-														$result=mysql_query($sql); 
-														$i=0; 
-														$a=1;
-														while ($row=mysql_fetch_row($result)) 
-														{ 
-														 $id_cateuser = $rows["id_cateuser"];
-														 
-														 echo "<option value=".$row[$a].">".$row[$i]."</option>\n"; 
-														} 
-														echo "</select>"; 
-												?> 
-									
-											<b style="color:red;">*</b>
-											
-											</td>
-										</tr>
-										<tr>
-											<td>
+										<td>
 												Catego&iacute;a de Procedimiento:
 											</td>
 											<td>
@@ -202,7 +174,7 @@ include("conexion.php");
 														mysql_select_db("conocimiento",$link); 
 														echo"<select type=name name=id_catepro id=id_catepro>";
 
-														$sql="SELECT  nombre_cate, id_catepro FROM categoria_procedimiento"; 
+														$sql="SELECT  nombre_cate, id_catepro FROM categoria_procedimiento ORDER BY nombre_cate"; 
 														$result=mysql_query($sql); 
 														
 														$i=0; 
@@ -220,6 +192,36 @@ include("conexion.php");
 											
 											</td>
 										</tr>
+										<tr>
+											<td>
+												Categor&iacute;a de Usuario:
+											</td>
+											<td>
+												<input type="HIDDEN" name="id_cateuser" />
+												<?php 
+														$link =mysql_connect("localhost","root","");
+														mysql_select_db("conocimiento",$link); 
+														echo"<select type=name name=id_cateuser id=id_cateuser >"; 
+
+														$sql="SELECT descripcion, id_cateuser  FROM categoria_usuario ORDER BY descripcion"; 
+														$result=mysql_query($sql); 
+														$i=0; 
+														$a=1;
+														while ($row=mysql_fetch_row($result)) 
+														{ 
+														 $id_cateuser = $rows["id_cateuser"];
+														 
+														 echo "<option value=".$row[$a].">".$row[$i]."</option>\n"; 
+														} 
+														echo "</select>"; 
+												?> 
+									
+											<b style="color:red;">*</b>
+											
+											</td>
+										</tr>
+										
+											
 									</table>
 								</div>
 							</td>

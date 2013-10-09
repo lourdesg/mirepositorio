@@ -1,0 +1,67 @@
+body{
+	margin:0 auto;
+	width:600px;
+}
+
+/*registros*/
+table.registros{
+		border:0;
+		width:100%;
+	}
+table.registros td{
+		border:0;
+	}	
+table.registros tr.titulos{
+		background:#d0d0d0;
+		text-align:center;
+		text-transform:uppercase;
+		font-size:16;
+	}
+table.registros tr.row0{
+		background:#e0e0e0;
+	}
+table.registros tr.row1{
+		background:#f7f7f7;
+	}
+
+form.digg *{
+	margin: 0;
+	padding: 0;
+}
+form.digg{
+	background-color:#1b5790;
+	padding:5px;
+	text-align:right;
+}
+form.digg label{
+	display:none;
+}
+form.digg input{
+	font-family:MS Shell Dlg;
+	font-size:0.8em;
+	vertical-align:top;
+}
+form.digg input#text{
+	background-color:#fff;
+	width:226px;
+	height:1.4em;
+	border:1px solid #fff;
+	
+	padding:1px 4px;
+}
+form.digg input#search{
+	background-color:#fff;
+	background-image:url(digg/images/fondo-boton.png);
+	background-repeat:no-repeat;
+	
+	width:21px;
+	height:22px;
+	text-indent:-9999px;
+
+	margin:1px 0 0 0;
+	border:0;
+}
+form.digg > input#search{
+	margin:0 0 0 0;	
+}
+

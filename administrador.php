@@ -41,9 +41,11 @@ include("conexion.php");
 						<TR width= 50px>
 							<TD width= "250px" height="250px"  style="float:top">
 							<button   class ="redondear" style='width:250px; height:250px; background-color: #669933'>
+								<link href="usuario.php" style="text-decoration:none;color:white; " >
 								<img  class="redondear" src="Imagenes/usuario.png"width= "200px" height="200px">
 								<font size=4>
 									<a link href="usuario.php" style="text-decoration:none;color:white; " >
+									
 										<b> Usuario</b>
 									</a>
 								</font>
