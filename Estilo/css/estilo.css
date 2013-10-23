@@ -19,8 +19,7 @@ body {
 	padding-left: 20px;
 	border-radius: 10px;
 }
-.redondear{
- -moz-border-radius: 10px;
+.redondear{   
   -o-border-radius: 10px;
   border-radius: 30px;
   box-shadow: 1px 1px 3px #000;
@@ -429,5 +428,7 @@ margin-left:5px
     color: #000;
     background-color: steelblue;
 }
+
+
 
  

@@ -45,7 +45,35 @@
 			muestra_oculta('contenido_a_mostrar');
 		}
 		</script>
-		
+		</script>
+		<script>
+		function soloLetras(e) {
+			key = e.keyCode || e.which;
+			tecla = String.fromCharCode(key).toLowerCase();
+			letras = " áéíóúabcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+			especiales = [];
+
+			tecla_especial = false
+			for(var i in especiales) {
+				if(key == especiales[i]) {
+					tecla_especial = true;
+					break;
+				}
+			}
+
+			if(letras.indexOf(tecla) == -1 && !tecla_especial)
+				return false;
+		}
+
+		function limpia() {
+			var val = document.getElementById("miInput").value;
+			var tam = val.length;
+			for(i = 0; i < tam; i++) {
+				if(!isNaN(val[i]))
+					document.getElementById("miInput").value = '';
+			}
+		}
+		</script>
 		
 		<title>Base de Conocimiento</title>
 		<link href="Estilo/css/estilo.css" rel="stylesheet">
@@ -100,18 +128,7 @@
 																<td style="border-right: 1px solid rgb(221, 221, 221); padding: 3px;">
 																	<a href="administrador.php" style="text-decoration: none; color: rgb(68, 68, 68); font-size: 15px;" title="Atras">Atr&aacute;s</a>
 																</td>
-																<td style="padding: 3px;">
-																	<a href="?" style="text-decoration: none; color: white;" title="Limpiar"><img src="Imagenes/actualizar1.png" style="width: 35px;"></a>
-																</td>
-																<td style="border-right: 1px solid rgb(221, 221, 221); padding: 3px;">
-																	<a href="?" style="text-decoration: none; color: rgb(68, 68, 68); font-size: 15px;" title="Actualizar">Actualizar</a>
-																</td>
-																<td style="padding: 3px;">
-																	<a href="?" style="text-decoration: none; color: white;" title="Limpiar"><img src="Imagenes/agregar.png" style="width: 35px;"></a>
-																</td>
-																<td style="border-right: 1px solid rgb(221, 221, 221); padding: 3px; font-size: 15px;">
-																	<a style="cursor: pointer; color: rgb(68, 68, 68); " onclick="muestra_oculta('contenido_a_mostrar')" title="Mostrar/Ocultar Los Estados del Usuario">Mostrar/Ocultar Los estados del Usuario</a>
-																</td>
+																
 															</tr>
 														</tbody>
 													</table>
@@ -140,43 +157,7 @@
 				</center>
 			<hr>
 			
-			<!--Inicia la lista de campos  guardados en la base de datos -->
-			<div id="contenido_a_mostrar">
-				<table align= "center" width="600px" height="45px">
-					<tr>
-						<td>
-							<center>
-							<input type="name" name="descripcion" />
-							<input type="submit" name="submit" value="Buscar" /> 
-							 
-							</center>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="listadoEstado" style="height:200px;overflow-y:scroll;">
-								<?php do{ ?>
-								<div style="float:left;width:100px;height:45px;border-left:#dddddd solid 1px;padding:6px; font-size:12px;color:#444444;">
-									<?php 
-									$descripcion = trim($rowestado['descripcion']);
-									$max_descripcion = 20;
-									if (strlen($descripcion)>$max_descripcion)
-									{
-										$descripcion = substr($descripcion,0,$max_descripcion)."..";
-									}
-										echo $descripcion;
-									?>
-
-								</div>
-								<?php } while($rowestado = mysql_fetch_assoc($queryestado));?>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<!--Termina la lista de los campos guardados en la base de datos-->
-			
-			
+					
 			
 			<form method="POST" action="">
 				<div style="background:#fffde5;padding:7px;border:#dddddd solid 1px;">
@@ -192,7 +173,7 @@
 												Nombre del Estado:
 											</td>
 											<td>
-												<input type="name" name="descripcion" /><b style="color:red;">*</b>
+												<input type="name" name="descripcion"   onkeypress="return soloLetras(event)" /><b style="color:red;">*</b>
 											</td>
 										</tr>
 										<tr>

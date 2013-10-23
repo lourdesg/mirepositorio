@@ -1,6 +1,6 @@
 <?php
-if(isset($_POST['usuario']) && !empty($_POST['usuario']) &&
- isset($_POST['password']) && !empty($_POST['password'])) {
+  $value1 = $_POST['usuario'];
+  $value2 = $_POST['password'];
 /* 
  * Ejemplo de una página asegurada
  * Simplemente hay que añadir esta línea de PHP al principio.
@@ -9,13 +9,11 @@ if(isset($_POST['usuario']) && !empty($_POST['usuario']) &&
 $consulta=mysql_query("SELECT usuarios.id_usuario, estado.permiso as permiso FROM usuarios
             INNER JOIN estado
             ON usuarios.id_estado = estado.id_estado
-            WHERE nice = '".$_POST['usuario']."'
-            AND password = '".$_POST['password']."' ");
+            WHERE nice = '".$value1."'
+            AND password = '".$value2."' ");
 
-/* MUESTRA EN PANTALLA EL TEMA PRINCIPAL DEL FORO */
-while ($row=mysql_fetch_array($consulta))///error 
-
-{
+/* MUESTRA EN PANTALLA */
+while ($row=mysql_fetch_array($consulta)){
 
 
 $nice =$row['id_usuario'];
@@ -24,13 +22,13 @@ $ver = 'ver';
 
 if ($permiso==$ver)
 	{
-	    header('Location: busqueda.php'); 
+	    header('Location: buscador.php'); 
 	}else{ 
 		header('Location:opciones.php');
 	}
 
 }
-}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

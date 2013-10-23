@@ -9,12 +9,12 @@ if(isset($_POST['nombre']) && !empty($_POST['nombre']) &&
 	
 	$link = mysql_connect("localhost","root","");
 	mysql_select_db("conocimiento",$link);
-	$nuevo_usuario=mysql_query("select nice from usuarios where nice='{$_POST['nice']}' and correo='{$_POST['correo']}'"); 
-		
+	$nuevo_usuario=mysql_query("SELECT nice FROM usuarios
+            WHERE nice = '{$_POST['nice']}'");
 			if(mysql_num_rows($nuevo_usuario)>0) 
 			{ 
 			echo " 
-			<p class='avisos'>El Nombre delUsuario ya Existe</p> 
+			<p class='avisos'>El Nombre del Usuario ya Existe</p> 
 			<p class='avisos'><a href='javascript:history.go(-1)' class='clase1'>Volver atrás</a></p> 
 			"; 
 			}else{
@@ -44,5 +44,5 @@ if(isset($_POST['nombre']) && !empty($_POST['nombre']) &&
 	echo "Error, no ha introducido todos los datos";
 
 	}
-						
+					
 ?>

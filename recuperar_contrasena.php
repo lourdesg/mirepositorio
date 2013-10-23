@@ -1,72 +1,38 @@
 <?php
 include("conexion.php");
-include("class.phpmailer.php");
-include("class.smtp.php");
-
-
 ?>
 <html>
 	<head>
+		<title>Base de Conocimiento</title>
 		<link href="Estilo/css/estilo.css" rel="stylesheet">
-		<title>.:: Recuperar Password ::. </title>
-     
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <link rel="stylesheet" href="estilos.css" type="text/css">
-    <script src="js/jquery171.js" type="text/javascript"></script> 
-    <script src="js/jquery.validate.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/jquery.alerts.js"></script>
-    <link href="js/jquery.alerts.css" rel="stylesheet" type="text/css" />
-     
-    <script type="text/javascript">
-    <!--
-        $().ready(function() {
-        $("#recPassword").validate({
-        rules: {
-        /*A continuacion los nombres de los campos y sus reglas a cumplir */
-            correo2: {
-            required: true,
-            email: true,
-            equalTo: "#correo"
-            },
-            correo: {
-            required: true,
-            email: true
-            }
- 
- 
-        }
-        });
-        $("#correo").focus();
-        });
-    // -->
-    </script>
+
 	<head>
 	<body>
 		<div class="container">
 				<div class="row">
 					<div id="banner">
-								
+
 						<div class="span12">
 						<table width = 1024>
 							<tr>
 							<td width ="880" >
-							<img class ="redondear" src="Imagenes/logoBanadesa.png" width="900px" height="150px"  border="0"> 
+							<img class ="redondear" src="Imagenes/logoBanadesa.png" width="900px" height="150px"  border="0">
 							</td>
 							</tr>
 						</table>
 					</div><!--cierra el div de la clase span12-->
 					</div><!--cierra el div del id banner-->
 				</div><!--cierra el div de la clase row-->
-				
-				<form id="recPassword" name="recPassword"  method="POST" action="recuperar_contrasena.php">
- 
-				<table align="center" width="400px">
-				 
-				<tr>
-					<td colspan="2" align="center"><h3><b>Recuperar Password</b></h3></td>
-				</tr>
-				 
-				<?php
+			<form method="POST" action="">
+				<div style="background:#fffde5;padding:7px;border:#dddddd solid 1px;">
+				<center>
+					<h1>Recuperaci&oacute;n de Contrase&ntilde;a</h1>
+						<table style="width:800px;background:#ffffff;padding:7px;border:#dddddd solid 1px;">
+						<tr>
+							<td align="center" valign="top">
+								<div class="formulario" bgcolor="white">
+									<table class="formulario"bgcolor="White">
+									<?php
 				//Si llega el parametro correo y no viene vacio
 				if( isset( $_POST['correo'] ) && $_POST['correo'] != '' )
 				{
@@ -111,7 +77,7 @@ include("class.smtp.php");
 					 $destinatario = $elcorreo;             //A quien se envia
 					 $nomAdmin          = 'Banco Nacional de Desarrollo Agricula';       //Quien envia
 					 $mailAdmin         = 'lougar3011@gmail.com';   //Mail de quien envia
-					 $urlAccessLogin = 'http://localhost/index.php/'; //Url de la pantalla de login
+					 $urlAccessLogin = 'http://localhost/base/mirepositorio/index.php/'; //Url de la pantalla de login
 				 
 					 $elmensaje = "";     
 					 $asunto = "Nueva contraseña para ".$nick;
@@ -224,9 +190,16 @@ include("class.smtp.php");
 				 
 				</table>
 				</form>
-				
+									</table>
+								</div><!--cierre de class de formulario-->
+							</td>
+						</tr>
+						</table>
+				</center>
+				</div><!--cierre del div style-->
+			</form>
 				</div><!--cierra el div de la clase container-->
-				<center>
+			<center>
 				<table>
 				<tr>
 				<td align="center">

@@ -1,10 +1,6 @@
 <?php
 	include("conexion.php");
 	include("funciones.php");
-
-	
-
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -57,7 +53,7 @@
 				</div><!--cierra el div de la clase row-->
 				
 				<hr class= "linea" style=" margin-left:45px">
-		<table "width="920px"   cellpadding="0" >
+		<table width="920px"   cellpadding="0" >
 			<tr>
 				<td  width= "500px" height ="400px">
 					<img  class="redondear" src="Imagenes/Banadesa.png"width= "400px" height="400px">

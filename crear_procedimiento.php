@@ -29,8 +29,11 @@ if(isset($_POST['nombre']) && !empty($_POST['nombre']) &&
 
 	} else {
 
-
+		
 	echo "Los datos han sido introducidos satisfactoriamente";
+
+
+
 
 	}
 	}

@@ -1,96 +1,61 @@
 <?php
-include("conexion.php");
+require('config.php');
+require('include/conexion.php');
+require('include/funciones.php');
+require('include/pagination.class.php');
 
-?>
-<html>
-	<head>
-	 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.min.js"></script>
-    <script src="https://cdn.firebase.com/v0/firebase.js"></script>
-    <script src="http://firebase.github.io/angularFire/angularFire.js"></script>
-    <script src="project.js"></script>
+$items = 10;
+$page = 1;
 
-		<title>Base de Conocimiento</title>
-		<link href="Estilo/css/estilo.css" rel="stylesheet">
-		
-	</head>
-	<body>
-		<div class="container">
-				<div class="row">
-					<div id="banner">
-								
-						<div class="span12">
-						<table width = 1024>
-							<tr>
-								<td width ="880" >
-									<img class ="redondear" src="Imagenes/logoBanadesa.png" width="900px" height="150px"  border="0"> 
-								</td>
-								<td width="300">
-									<br>
-									<p><a href='index.php' title="Cerrar mi sesion como usuario validado">Cerrar Sesi&oacute;n</a></p>
-								</td>
-							</tr>
-						</table>
-						</div><!--cierra el div de la clase span12-->
-					</div><!--cierra el div del id banner-->
-				</div><!--cierra el div de la clase row-->
-				
-				 <form action="buscar.php" method="post">
-			 Buscar: <input name="palabra">
-			 <input type="submit" name="buscador" value="Buscar">
-			 </form>
-			 <?
-			 if ($_POST['buscador'])
-			 { 
-			 // Tomamos el valor ingresado
-			 $buscar = $_POST['palabra'];
+if(isset($_GET['page']) and is_numeric($_GET['page']) and $page = $_GET['page'])
+		$limit = " LIMIT ".(($page-1)*$items).",$items";
+	else
+		$limit = " LIMIT $items";
 
-			 // Si está vacío, lo informamos, sino realizamos la búsqueda
-			 if(empty($buscar))
-			 {
-			 echo "No se ha ingresado una cadena a buscar";
-			 }else{
-			 // Conexión a la base de datos y seleccion de registros
-			 $con=mysql_connect("localhost","usuario","password");
-			 $sql = "SELECT * FROM procedimiento WHERE nombre like '%$buscar%' ORDER BY id DESC";
-			 mysql_select_db("conocimiento ", $con); 
+if(isset($_GET['q']) and !eregi('^ *$',$_GET['q'])){
+		$q = sql_quote($_GET['q']); //para ejecutar consulta
+		$busqueda = htmlentities($q); //para mostrar en pantalla
 
-			 $result = mysql_query($sql, $con); 
+		$sqlStr = "SELECT * FROM procedimiento WHERE nombre LIKE '%$q%' ORDER BY visita DESC";
+		$sqlStrAux = "SELECT count(*) as total FROM procedimiento WHERE nombre LIKE '%$q%' ORDER BY visita DESC ";
+	}else{
+		$sqlStr = "SELECT * FROM procedimiento ORDER BY visita DESC";
+		$sqlStrAux = "SELECT count(*) as total FROM procedimiento ORDER BY visita DESC";
+	}
 
-			 // Tomamos el total de los resultados
-			 $total = mysql_num_rows($result);
+$aux = Mysql_Fetch_Assoc(mysql_query($sqlStrAux,$link));
+$query = mysql_query($sqlStr.$limit, $link);
+?>	<p><?php
+		if($aux['total'] and isset($busqueda)){
+				echo "{$aux['total']} Resultado".($aux['total']>1?'s':'')." que coinciden con tu b&uacute;squeda \"<strong>$busqueda</strong>\".";
+			}elseif($aux['total'] and !isset($q)){
+				echo "Total de registros: {$aux['total']}";
+			}elseif(!$aux['total'] and isset($q)){
+				echo"No hay registros que coincidan con tu b&uacute;squeda \"<strong>$busqueda</strong>\"";
+			}
+	?></p>
 
-			 // Imprimimos los resultados
-			 if ($row = mysql_fetch_array($result)){ 
-			 echo "Resultados para: <b>$buscar</b>";
-			 do { 
-			 ?>
-			 <p><b><a href="noticia.php?id=<?=$row['id'];?>"><?=$row['titulo'];?></a></b></p>
-			 <?
-			 } while ($row = mysql_fetch_array($result)); 
-			 echo "<p>Resultados: $total</p>";
-			 } else { 
-			 // En caso de no encontrar resultados
-			 echo "No se encontraron resultados para: <b>$buscar</b>"; 
-			 }
-			 }
-			 }
-			 ?>
-				
-		</div><!--cierra el div de la clase container-->
-			<center>
-				<table>
-					<tr>
-						<td align="center">
-								<small>
-								&copy; Banadesa <?php echo date("Y");?>
-								</small>
-						</td>
-					</tr>
-				</table>
-				<small>
-					Banco Nacional de Desarrollo Agricula 
-				</small>
-			</center>
-</body>
-</html>
+	<?php 
+		if($aux['total']>0){
+			$p = new pagination;
+			$p->Items($aux['total']);
+			$p->limit($items);
+			if(isset($q))
+					$p->target("comentario.php?q=".urlencode($q));
+				else
+					$p->target("comentario.php");
+			$p->currentPage($page);
+			$p->show();
+			echo "\t<table class=\"registros\">\n";
+			//echo "<tr class=\"titulos\"><td>Procedimiento</td></tr>\n";
+			$r=0;
+			while($row = mysql_fetch_assoc($query)){
+          echo "\t\t<tr class=\"row$r\"><td><a  link href = 'comentario.php'{$row['id_procedimiento']}\" target=\"_blank\">".htmlentities($row['nombre'])."</a></td></tr>\n";
+          echo "\t\t<tr class=\"row$r\"><td><a{$row['id_procedimiento']}\" target=\"_blank\">".htmlentities($row['descripcion'])."</a></td></tr>\n";
+		  echo "\t\t<tr class=\"row$r\"><td>Visita <a{$row['id_procedimiento']}\" target=\"_blank\">".htmlentities($row['visita'])."</a></td></tr>\n";
+		  if($r%2==0)++$r;else--$r;
+        }
+			echo "\t</table>\n";
+			$p->show();
+		}
+	?>

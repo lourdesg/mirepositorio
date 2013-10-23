@@ -32,7 +32,7 @@ include("conexion.php");
 						<TR width= 50px>
 							<TD width= "400px" height="400px"  style="float:top">
 							<button   class ="redondear" style='width:400px; height:400px; background-color: #669933'>
-								<img  class="redondear" src="Imagenes/editar.png"width= "350px" height="350px">
+								<img  class="redondear" src="Imagenes/blanco.png"width= "350px" height="350px">
 								<font size=4>
 									<a link href="administrador.php" style="text-decoration:none;color:white; " >
 										<b> Crear Procedimiento</b>
@@ -43,9 +43,9 @@ include("conexion.php");
 							<br></br>
 							<TD width= "400px" height="250px"  style="float:top">
 							<button   class ="redondear" style='width:400px; height:400px; background-color: #669933'>
-								<img  class="redondear" src="Imagenes/Banadesa.png"width= "350px" height="350px">
+								<img  class="redondear" src="Imagenes/ver.png"width= "350px" height="350px">
 								<font size=4>
-									<a link href="busqueda.php" style="text-decoration:none;color:white; " >
+									<a link href="buscador.php" style="text-decoration:none;color:white; " >
 										<b> Ver el Procedimiento</b>
 									</a>
 								</font>

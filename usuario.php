@@ -61,6 +61,8 @@
 		<script href="js/editor.js"></script>
 		<link href="tiptip/tipTip.css" rel="stylesheet">
 		<script src="usuarios/buscar.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
 		<script>
 			$(function(){	
 			$(".tiptip").tipTip();
@@ -79,8 +81,8 @@
 		function soloLetras(e) {
 			key = e.keyCode || e.which;
 			tecla = String.fromCharCode(key).toLowerCase();
-			letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
-			especiales = [8, 37, 39, 46];
+			letras = " áéíóúabcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+			especiales = [];
 
 			tecla_especial = false
 			for(var i in especiales) {
@@ -103,7 +105,25 @@
 			}
 		}
 		</script>
-				
+		<script>
+			function validacion_usuarios(e) {
+				key = e.keyCode || e.which;
+				tecla = String.fromCharCode(key).toLowerCase();
+				letras = " áéíóúabcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789-_";
+				especiales = [];
+
+				tecla_especial = false
+				for(var i in especiales) {
+					if(key == especiales[i]) {
+						tecla_especial = true;
+						break;
+					}
+				}
+
+				if(letras.indexOf(tecla) == -1 && !tecla_especial)
+					return false;
+			}
+		</script>
 		<script language="JavaScript">
 			/*funcion para mostrar y ocultar*/
 			function muestra_oculta(id){
@@ -116,7 +136,21 @@
 			muestra_oculta('contenido_a_mostrar');
 		}
 		</script>
-		
+		<script>
+			function valida_email($email){   
+			  if(eregi("^([_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $email))   
+			  return true;   
+				else  
+			  return false;
+			}
+			$mail = "mail@example.com";
+			if(valida_email($mail))
+			{ 
+			echo "El mail es valido"; 
+			} else { 
+			echo "El mail NO es valido"; 
+			}
+		</script>
 		
 		<title>Base de Conocimiento</title>
 		<link href="Estilo/css/estilo.css" rel="stylesheet">
@@ -171,18 +205,6 @@
 																<td style="border-right: 1px solid rgb(221, 221, 221); padding: 3px;">
 																	<a href="administrador.php" style="text-decoration: none; color: rgb(68, 68, 68); font-size: 15px;" title="Atras">Atr&aacute;s</a>
 																</td>
-																<td style="padding: 3px;">
-																	<a href="?" style="text-decoration: none; color: white;" title="Limpiar"><img src="Imagenes/actualizar1.png" style="width: 35px;"></a>
-																</td>
-																<td style="border-right: 1px solid rgb(221, 221, 221); padding: 3px;">
-																	<a href="?" style="text-decoration: none; color: rgb(68, 68, 68); font-size: 15px;" title="Actualizar">Actualizar</a>
-																</td>
-																<td style="padding: 3px;">
-																	<a href="?" style="text-decoration: none; color: white;" title="Limpiar"><img src="Imagenes/agregar.png" style="width: 35px;"></a>
-																</td>
-																<td style="border-right: 1px solid rgb(221, 221, 221); padding: 3px; font-size: 15px;">
-																	<a style="cursor: pointer; color: rgb(68, 68, 68); " onclick="muestra_oculta('contenido_a_mostrar')" title="Mostrar/Ocultar Los Estados del Usuario">Mostrar/Ocultar Los estados del Usuario</a>
-																</td>
 															</tr>
 														</tbody>
 													</table>
@@ -210,45 +232,8 @@
 					</table>
 				</center>
 			<hr>
-			<!--Inicia la lista de campos  guardados en la base de datos -->
-			<div id="contenido_a_mostrar">
-			
-				<table align= "center" width="600px" height="45px">
-					<tr>
-						<td>
-							<center>
-							<input type="name" name="buscar" />
-							<input type="submit" name="Buscar" value="Buscar" /> 
-							 
-							</center>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="listadoNice" style="height:200px;overflow-y:scroll;">
-								<?php do{ ?>
-								<div style="float:left;width:100px;height:45px;border-left:#dddddd solid 1px;padding:6px; font-size:12px;color:#444444;">
-									<?php 
-									$nice = trim($rowusuario['nice']);
-									$max_nice = 15;
-									if (strlen($nice)>$max_nice)
-									{
-										$nice = substr($nice,0,$max_nice)."..";
-									}
-										echo $nice;
-									?>
-
-								</div>
-								<?php } while($rowusuario = mysql_fetch_assoc($queryusuario));?>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<!--Termina la lista de los campos guardados en la base de datos-->
 						
-						
-			<form method="POST" action="">
+			<form method="POST" action="" >
 				<div style="background:#fffde5;padding:7px;border:#dddddd solid 1px;">
 				<center>
 					<h1>Formulario de Ingreso</h1>
@@ -263,7 +248,7 @@
 												Nombre del usuario:
 											</td>
 											<td>
-												<input class="required" type="name" name="nombre" onkeypress="return soloLetras(event)" id="miInput" maxlength="30" size= "35" style='font-size: 16px'/><b style="color:red;">*</b>
+												<input class="required" type="name" name="nombre" placeholder="Nombre"onkeypress="return soloLetras(event)" id="nombre" maxlength="30" size= "35" style='font-size: 16px'/><b style="color:red;">*</b>
 												
 											</td>
 										</tr>
@@ -272,7 +257,7 @@
 												Apellido del usuario:
 											</td>
 											<td>
-												<input type="name" name="apellido"  onkeypress="return soloLetras(event)"  id="miInput" maxlength="30" size= "35" style='font-size: 16px'/><b style="color:red;">*</b>
+												<input type="name" name="apellido"  onkeypress="return soloLetras(event)" placeholder="Apellido" id="apellido" maxlength="30" size= "35" style='font-size: 16px'/><b style="color:red;">*</b>
 											</td>
 										</tr>
 										<tr>
@@ -280,7 +265,7 @@
 												usuario:
 											</td>
 											<td>
-												<input type="name" name="nice"maxlength="20" size= "20" style='font-size: 16px' /><b style="color:red;">*</b>
+												<input type="name" name="nice"maxlength="20"  placeholder="Nombre del Usuario " onkeypress="return validacion_usuarios(event)"size= "20" style='font-size: 16px' /><b style="color:red;">*</b>
 											</td>
 										</tr>
 										<tr>
@@ -288,15 +273,15 @@
 												Correo:
 											</td>
 											<td>
-												<input type="name" name="correo" maxlength="30" size= "35" style='font-size: 16px' /><b style="color:red;">*</b>
+												<input type="name" class="easyui-validatebox" placeholder="ejemplo@banadesa.hn "data-options="required:true,validType:'email'" name="correo" maxlength="30"onkeypress="return valida_email(event)" size= "35" style='font-size: 16px' /><b style="color:red;">*</b>
 											</td>
 										</tr>
-										<tr>
+										<tr> 
 											<td style='font-size: 16px'>
 												password:
 											</td>
 											<td>
-												<input type="password" name="password" maxlength="20" size= "20" style='font-size: 16px'/><b style="color:red;">*</b>
+												<input type="password" name="password" maxlength="20"placeholder="Contraseña" onkeypress="return validacion_usuarios(event)"size= "20" style='font-size: 16px'/><b style="color:red;">*</b>
 												
 												
 										</tr>
@@ -309,7 +294,7 @@
 												<?php 
 														$link =mysql_connect("localhost","root","");
 														mysql_select_db("conocimiento",$link); 
-														echo"<select type=name name=estado id=miInput maxlength=20  font-size=16 >"; 
+														echo"<select type=name name=estado id=miInput maxlength=20  font-size=16 placeholder=Seleccione una Opcion >"; 
 
 														$sql="SELECT descripcion, id_estado  FROM estado ORDER BY descripcion"; 
 														$result=mysql_query($sql); 
@@ -365,6 +350,7 @@
 						</tr>
 					</table>
 					<input type="submit" name="submit" value="Guardar" /> 
+					
 				</center>
 				</div>
 			</form>	

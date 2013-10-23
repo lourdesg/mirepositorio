@@ -1,6 +1,17 @@
 <?php
 include("conexion.php");
+	session_start();
+	if(isset($_POST['accion'])=="" && !empty($_POST['accion'])=="") {
+		$_SESSION['contador']=0;
+	}
+	if(isset($_POST['accion'])=="anadir" && !empty($_POST['accion'])=="anadir") {
+		$_SESSION['datos'][$_SESSION['contador']][0]=$_POST['num_paso'];
+		$_SESSION['datos'][$_SESSION['contador']][1]=$_POST['nombre_paso'];
+		$_SESSION['datos'][$_SESSION['contador']][2]=$_POST['descripcion_paso'];
+		$_SESSION['datos'][$_SESSION['contador']][3]=$_POST['adjunta'];
 
+		$_SESSION['contador']=$_SESSION['contador']+1;
+	}
 ?>
 <html>
 	<head>
@@ -106,11 +117,11 @@ include("conexion.php");
 						</tbody>
 					</table>
 				</center>
-				<form method="POST" action="">
-				<div style="background:#fffde5;padding:7px;border:#dddddd solid 1px;">
+			<form method="POST" action="">
+				<div style="background:#fffde5;padding:7px;border:#dddddd solid 1px;width:1000px">
 				<center>
 					<h1>Formulario de Ingreso</h1>
-						<table style="width:800px;">
+						<table style="width:800px;background:#ffffff;padding:7px;border:#dddddd solid 1px;">
 						<tr>
 							<td align="center" valign="top">
 								<div class="formulario">
@@ -120,7 +131,7 @@ include("conexion.php");
 												Nombre del Procedimiento:
 											</td>
 											<td>
-												<input type="text" name="nombre" id="nombre" /><b style="color:red;">*</b>
+												<input type="text" name="nombre" id="nombre" size="80" maxlength="100"/><b style="color:red;">*</b>
 											</td>
 										</tr>
 										<tr>
@@ -128,7 +139,7 @@ include("conexion.php");
 												Descripci&oacute;n del Procedimiento:
 											</td>
 											<td>
-												<br /><textarea name="descripcion" id="descripcion" cols="40" style=" height: 100px;" rows="7"/></textarea><b style="color:red;">*</b>
+												<textarea name="descripcion" id="descripcion" cols="40" style=" height: 100px;" rows="7" size= "35" style='font-size: 16px' font="Arial, Helvetica, sans-serif;"></textarea><b style="color:red;">*</b>
 											</td>
 										</tr>
 										<tr>
@@ -142,23 +153,29 @@ include("conexion.php");
 												</select>
 											<b style="color:red;">*</b>
 											</td>
+											
 										</tr>
 									</table>
 								</div>
 							</td>
 						</tr>
 					</table>
-					<input type="submit" name="submit" value="Guardar" /> 
+				<br>
+				<input type="submit" name="guardar" value="Agregar Pasos" onkeypress="muestra_oculta" /> 
 				</center>
 				</div>
 			</form>	
+			
 			<?php
-			if (isset($_POST['submit'])) {
-				require("crear_procedimiento.php");
+		
+			if (isset($_POST['guardar'])) {
+			require("crear_procedimiento.php");
+			include ("detalle.php");
 			}
 			?>
-				
-				</div><!--cierra el div de la clase container-->
+						
+						
+		</div><!--cierra el div de la clase container-->
 				<center>
 				<table>
 				<tr>
